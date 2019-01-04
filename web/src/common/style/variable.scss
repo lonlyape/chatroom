@@ -1,0 +1,22 @@
+$basecolor:#7bbfea;
+$bordercolor:#dfdfdf;
+$buttonbackgroud:#4799ff;
+$side:15px;
+
+.hand {
+	cursor: pointer;
+}
+
+.button {
+	line-height: 36px;
+	background: $buttonbackgroud;
+
+	span {
+		letter-spacing: 1px;
+		font-size: 14px;
+		color: #fff;
+		padding: 4px 10px;
+		border-radius: 2px;
+		@extend .hand;
+	}
+}
