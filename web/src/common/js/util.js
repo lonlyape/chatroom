@@ -34,12 +34,6 @@ const util = {
 	//post 请求
 	requestPost: function(interfaceName, param, callback) {
 		param = param ? param : {};
-		if (!param.account) {
-			param.account = this.getStor('user') ? this.getStor('user').account : '';
-		}
-		if (!param.userType) {
-			param.userType = this.getStor('user') ? this.getStor('user').userType : '';
-		}
 		var url = interfaceName;
 		if (/^(http)/.test(url)) {
 			param = {};
