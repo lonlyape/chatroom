@@ -32,8 +32,9 @@ Math.stochastic = function(star, end) {
 
 const util = {
 	//post 请求
-	requestPost: function(interfaceName, param, callback) {
+	requestPost: function(interfaceName, param, callback, callback2) {
 		param = param ? param : {};
+		param.token = window.global.token;
 		var url = interfaceName;
 		if (/^(http)/.test(url)) {
 			param = {};
@@ -42,13 +43,23 @@ const util = {
 		} else {
 			url = window.config.baseUrl + window.config.request[interfaceName];
 		}
+
 		var httpSet = {
 			emulateJSON: true,
 		};
+
 		Vue.http.post(url, param, httpSet).then((res) => {
 			var body = res.body;
-			callback(body);
-
+			var data = body.data;
+			if (body.code == 200) {
+				callback(data);
+			} else {
+				if (callback2) {
+					callback2(body);
+				} else {
+					window.alert(body.message);
+				}
+			}
 		});
 	},
 	//get 请求
@@ -164,7 +175,9 @@ const util = {
 	//获取 localStorage 的缓存内容
 	getStor: function(name) {
 		var stor = localStorage.getItem(name);
-		stor = JSON.parse(stor);
+		if (stor) {
+			stor = JSON.parse(stor);
+		}
 		return stor;
 	},
 	//设置 localStorage 的缓存内容

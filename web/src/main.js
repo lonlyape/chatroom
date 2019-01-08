@@ -5,6 +5,7 @@ import store from './store'
 
 import './common/js/config.js'
 import './common/js/util.js'
+import './common/js/common.js'
 
 import './common/style/resect.css'
 

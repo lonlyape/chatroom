@@ -97,8 +97,12 @@ export default {
 				sex: this.sex
 			};
 			var url = 'register';
-			window.util.requestPost(url, param, (res) => {
-				console.log(res);
+			window.util.requestPost(url, param, (data) => {
+				var token = data.token;
+				window.util.setStor('token', token);
+				window.global.updateToken(token);
+				window.util.jump('/room');
+				this.$store.dispatch('updateUserInfo');
 			});
 		},
 	},

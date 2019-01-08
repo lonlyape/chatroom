@@ -5,6 +5,7 @@ const config = {
 	request: {
 		register: '/user/register',
 		login: '/user/login',
+		getUserInfo: '/user/getUserInfo',
 	},
 };
 

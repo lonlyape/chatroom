@@ -46,8 +46,12 @@ export default {
 				password: this.password
 			};
 			var url = 'login';
-			window.util.requestPost(url, param, (res) => {
-				console.log(res);
+			window.util.requestPost(url, param, (data) => {
+				var token = data.token;
+				window.util.setStor('token', token);
+				window.global.updateToken(token);
+				window.util.jump('/room');
+				this.$store.dispatch('updateUserInfo');
 			});
 		},
 	},
