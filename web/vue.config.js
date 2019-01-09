@@ -3,7 +3,7 @@ module.exports = {
 	pages: {
 		index: {
 			entry: process.env.NODE_ENV === 'production' ? './src/main.build.js' : './src/main.dev.js',
-			template: process.env.NODE_ENV === 'production' ? 'public/index-build.html' : 'public/index-dev.html',
+			template: process.env.NODE_ENV === 'production' ? 'public/index-build.html' : 'public/index.html',
 			filename: 'index.html',
 		}
 	},
