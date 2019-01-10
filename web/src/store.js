@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		userInfo: {},
+		chatList: [],
 	},
 	mutations: {
 		setUserInfo(state, info) {

@@ -3,7 +3,9 @@
 		<div class="top">
 			<div v-text="friend.userName"></div>
 		</div>
-		<div class="center"></div>
+		<div class="center">
+			<chat-content v-bind:friend="friend"></chat-content>
+		</div>
 		<div class="bottom">
 			<div class="box" v-bind:class="{'focusbg':isFocus}">
 				<div class="text_box">
@@ -17,6 +19,7 @@
 	</div>
 </template>
 <script>
+import roomChatContent from './room.chat.content.vue'
 export default {
 	data() {
 		return {
@@ -24,7 +27,9 @@ export default {
 			sendText: ''
 		}
 	},
-	components: {},
+	components: {
+		chatContent: roomChatContent,
+	},
 	props: {
 		friend: {
 			type: Object,
@@ -76,12 +81,12 @@ export default {
 			.text_box {
 				position: absolute;
 				top: 0;
-				width: 100%;
+				width: 96%;
 				bottom: 30px;
 				padding: 10px 2% 0;
 
 				textarea {
-					width: 96%;
+					width: 100%;
 					height: 100%;
 					background: transparent;
 					border: none;

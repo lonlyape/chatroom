@@ -18,7 +18,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['userInfo']),
+		...mapState(['userInfo', 'chatList']),
 	},
 	created() {
 		this.socketCreate();
@@ -55,10 +55,12 @@ export default {
 		},
 		message(msg) {
 			console.log('socket : ', msg.data);
+			this.chatList.push(JSON.parse(msg.data));
 		},
 		sendMsg(msg) {
 			msg.type = 'chat';
 			this.ws.send(JSON.stringify(msg));
+			this.chatList.push(msg);
 		},
 
 	},

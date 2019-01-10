@@ -43,12 +43,7 @@ export default {
 		socket: roomSocket
 	},
 	computed: {
-		...mapState(['userInfo']),
-	},
-	watch: {
-		friend: function(val, oval) {
-			console.log(val)
-		}
+		...mapState(['userInfo', 'chatList']),
 	},
 	methods: {
 		setChatFriend(one) {
