@@ -9,7 +9,7 @@ Vue.use(Router)
 export default new Router({
 	routes: [{
 		path: '/',
-		redirect: '/register'
+		redirect: '/room'
 	}, {
 		path: '/register',
 		name: 'register',

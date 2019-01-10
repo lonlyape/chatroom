@@ -1,0 +1,67 @@
+<template>
+	<div class="socket">
+		webSocket
+	</div>
+</template>
+<script>
+import { mapState, mapActions } from 'vuex'
+export default {
+	data() {
+		return {
+			ws: {},
+		}
+	},
+	props: {
+		url: {
+			type: String,
+			default: ''
+		}
+	},
+	computed: {
+		...mapState(['userInfo']),
+	},
+	created() {
+		this.socketCreate();
+	},
+	methods: {
+		socketCreate() {
+			var url = this.url || window.config.socketUrl;
+			var ws = new WebSocket(url);
+			var _this = this;
+
+
+			ws.onopen = function(e) {
+				console.log('webSocket created');
+				var interval = setInterval(() => {
+					var createdObj = {
+						type: 'create',
+						from: _this.userInfo.id
+					}
+
+					if (createdObj.from) {
+						ws.send(JSON.stringify(createdObj));
+						clearInterval(interval);
+					}
+				}, 10);
+			}
+
+			ws.onclose = function(e) {
+				console.log('webSocket closed');
+			}
+
+			ws.onmessage = this.message;
+
+			this.ws = ws;
+		},
+		message(msg) {
+			console.log('socket : ', msg.data);
+		},
+		sendMsg(msg) {
+			msg.type = 'chat';
+			this.ws.send(JSON.stringify(msg));
+		},
+
+	},
+}
+
+</script>

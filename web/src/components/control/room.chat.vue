@@ -7,9 +7,9 @@
 		<div class="bottom">
 			<div class="box" v-bind:class="{'focusbg':isFocus}">
 				<div class="text_box">
-					<textarea v-on:focus="focusStatus(true)" v-on:blur="focusStatus(false)"></textarea>
+					<textarea v-on:focus="focusStatus(true)" v-on:blur="focusStatus(false)" v-model="sendText"></textarea>
 				</div>
-				<div class="send">
+				<div class="send" v-on:click="sendMsg()">
 					<span>发送</span>
 				</div>
 			</div>
@@ -20,9 +20,11 @@
 export default {
 	data() {
 		return {
-			isFocus: false
+			isFocus: false,
+			sendText: ''
 		}
 	},
+	components: {},
 	props: {
 		friend: {
 			type: Object,
@@ -35,6 +37,11 @@ export default {
 		focusStatus(b) {
 			this.isFocus = b;
 		},
+		sendMsg() {
+			var sendText = this.sendText;
+			this.sendText = '';
+			this.$emit('sendMsg', sendText);
+		}
 	}
 }
 

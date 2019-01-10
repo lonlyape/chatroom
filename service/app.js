@@ -1,8 +1,10 @@
 // import express from 'express';
 const express = require('express');
-var user = require('./router/user')
 const bodyParser = require('body-parser');
 const multer = require('multer');
+
+var user = require('./router/user')
+var socket = require('./sockect.js');
 
 var upload = multer();
 
@@ -28,5 +30,9 @@ app.use(express.static('public'));
 app.use('/user', user);
 
 var sever = app.listen(8081, function() {
-	console.log('listen on port %d', sever.address().port);
+	var port = sever.address().port;
+	console.log('listen on port %d', port);
+
+	// webSocket 启动
+	socket(8082);
 });
