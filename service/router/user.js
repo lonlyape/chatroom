@@ -26,7 +26,7 @@ function updateToken(user, res) {
 		account: user.account
 	};
 	var token = jwt.sign(payload, baseConfig.jwt_key);
-	var sql = 'UPDATE user SET token=? WHERE account=?';
+	var sql = 'UPDATE user_base SET token=? WHERE account=?';
 	var sqlParam = [token, user.account];
 	mysql.query(sql, sqlParam).then(function(rows) {
 		var data = makeSendData(200, { token });
@@ -42,7 +42,7 @@ user.post('/register', function(req, res) {
 
 	//检测账号是否已经存在
 	function checkAccount() {
-		var checkSql = 'SELECT * FROM user WHERE account = ?';
+		var checkSql = 'SELECT * FROM user_base WHERE account = ?';
 		var sqlParam = [body.account];
 		mysql.query(checkSql, sqlParam).then(function(rows) {
 			if (rows.length) {
@@ -56,7 +56,7 @@ user.post('/register', function(req, res) {
 
 	//检测用户名是否已经存在
 	function checkUserName() {
-		var sql = 'SELECT * FROM user WHERE user_name = ?';
+		var sql = 'SELECT * FROM user_base WHERE user_name = ?';
 		var sqlParam = [body.userName];
 		mysql.query(sql, sqlParam).then(function(rows) {
 			if (rows.length) {
@@ -70,7 +70,7 @@ user.post('/register', function(req, res) {
 
 	//注册
 	function register() {
-		var sql = 'INSERT INTO user(account,user_name,name,sex,password) VALUE(?,?,?,?,?)';
+		var sql = 'INSERT INTO user_base(account,user_name,name,sex,password) VALUE(?,?,?,?,?)';
 		var sqlParam = [body.account, body.userName, body.name, body.sex, body.password];
 		mysql.query(sql, sqlParam, function(err, resule) {
 			if (err) {
@@ -91,7 +91,7 @@ user.post('/login', function(req, res) {
 
 	//账号登录
 	function loginByAccount() {
-		var sql = 'SELECT * FROM user WHERE account = ?';
+		var sql = 'SELECT * FROM user_base WHERE account = ?';
 		var sqlParam = [body.account];
 		mysql.query(sql, sqlParam).then(function(rows) {
 			if (rows.length) {
@@ -104,7 +104,7 @@ user.post('/login', function(req, res) {
 
 	//用户名登录
 	function loginByUserName() {
-		var sql = 'SELECT * FROM user WHERE user_name = ?';
+		var sql = 'SELECT * FROM user_base WHERE user_name = ?';
 		var sqlParam = [body.account];
 		mysql.query(sql, sqlParam).then(function(rows) {
 			if (rows.length) {
@@ -137,7 +137,7 @@ user.post('/getUserInfo', function(req, res) {
 	getBaseInfo();
 
 	function getBaseInfo() {
-		var sql = 'SELECT id, user_name as userName, sex FROM user WHERE token = ?';
+		var sql = 'SELECT id, user_name as userName, sex FROM user_base WHERE token = ?';
 		var sqlParam = [body.token];
 		mysql.query(sql, sqlParam).then(function(rows) {
 			var data = makeSendData(200, rows[0]);
@@ -152,11 +152,13 @@ user.post('/frindeList', function(req, res) {
 
 	var body = req.body;
 
+	getFrindeList()
+
 	function getFrindeList() {
-		var sql = 'SELECT id, user_name as userName, sex FROM user t1, user_relationship t2 WHERE t1.token = ？ AND (t1.id = t2.id_reply OR t1.id = t2.id_apply)';
-		var sqlParam = [body.token];
-		mysql.query(sql, sqlParam, function(rows) {
-			var data = makeSendData(200, rows[0]);
+		var sql = 'SELECT t3.id, t3.user_name as userName, t3.sex FROM user_base t1 JOIN user_relationship t2 ON t1.id = t2.id_apply JOIN user_base t3 ON t3.id = t2.id_reply WHERE t2.status IN (1,3,6) AND t1.token = ? UNION SELECT t3.id, t3.user_name as userName, t3.sex FROM user_base t1 JOIN user_relationship t2 ON t1.id = t2.id_reply JOIN user_base t3 ON t3.id = t2.id_apply WHERE t2.status IN (1,2,5) AND t1.token = ?';
+		var sqlParam = [body.token, body.token];
+		mysql.query(sql, sqlParam).then(function(rows) {
+			var data = makeSendData(200, rows);
 			res.send(data);
 		});
 	}

@@ -13,7 +13,7 @@ export default {
 	},
 	watch: {
 		userInfo: function(val, OldVal) {
-			console.log(val);
+			// console.log(val);
 		}
 	},
 	computed: {

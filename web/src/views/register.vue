@@ -138,6 +138,7 @@ export default {
 				.left {
 					vertical-align: middle;
 					width: 120px;
+					text-align: center;
 				}
 
 				.right {
