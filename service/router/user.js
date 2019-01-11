@@ -11,14 +11,12 @@ var makeSendData = util.makeSendData;
 
 var user = express.Router();
 
-user.use(bodyParser.json());
-user.use(bodyParser.urlencoded({ extended: true }));
-
 user.use(function(req, res, next) {
-	res.setHeader('Content-Type', 'application/json;charset=UTF-8');
-	res.setHeader('Access-Control-Allow-Origin', '*');
 	next();
 });
+
+module.exports = user;
+
 
 //更新token
 function updateToken(user, res) {
@@ -163,5 +161,3 @@ user.post('/frindeList', function(req, res) {
 		});
 	}
 });
-
-module.exports = user;

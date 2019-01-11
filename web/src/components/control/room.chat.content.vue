@@ -3,13 +3,13 @@
 		<div>
 			<div class="box">
 				<div class="chat_item" v-for="one in chatList" v-bind:key="one.id+one.msg">
-					<div class="friend" v-if="friend.id==one.from">
+					<div class="friend" v-if="friend.id==one.fromId">
 						<p v-text="friend.userName"></p>
 						<div>
 							<p v-text="one.msg"></p>
 						</div>
 					</div>
-					<div class="user" v-if="userInfo.id==one.from">
+					<div class="user" v-if="userInfo.id==one.fromId && friend.id==one.toId">
 						<p v-text="userInfo.userName"></p>
 						<div>
 							<p v-text="one.msg"></p>
@@ -37,6 +37,9 @@ export default {
 </script>
 <style scoped lang="scss">
 .chat_content {
+	height: 100%;
+	margin-right: -18px;
+
 	>div {
 		width: 100%;
 		height: 100%;
@@ -44,6 +47,7 @@ export default {
 
 		.box {
 			overflow-y: scroll;
+			height: 100%;
 
 			.chat_item {
 				margin: 20px $side;

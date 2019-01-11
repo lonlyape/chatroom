@@ -9,7 +9,7 @@
 		<div class="bottom">
 			<div class="box" v-bind:class="{'focusbg':isFocus}">
 				<div class="text_box">
-					<textarea v-on:focus="focusStatus(true)" v-on:blur="focusStatus(false)" v-model="sendText"></textarea>
+					<textarea v-on:focus="focusStatus(true)" v-on:blur="focusStatus(false)" v-on:keydown.enter.prevent="sendMsg()" v-model="sendText"></textarea>
 				</div>
 				<div class="send" v-on:click="sendMsg()">
 					<span>发送</span>
@@ -44,8 +44,10 @@ export default {
 		},
 		sendMsg() {
 			var sendText = this.sendText;
-			this.sendText = '';
-			this.$emit('sendMsg', sendText);
+			if (!/^\s*$/.test(sendText)) {
+				this.sendText = '';
+				this.$emit('sendMsg', sendText);
+			}
 		}
 	}
 }
@@ -66,6 +68,7 @@ export default {
 
 	.center {
 		flex: 1;
+		overflow: hidden;
 	}
 
 	.bottom {

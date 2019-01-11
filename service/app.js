@@ -3,7 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 
-var user = require('./router/user')
+var user = require('./router/user.js');
+var chat = require('./router/chat.js');
 var socket = require('./sockect.js');
 
 var upload = multer();
@@ -15,6 +16,7 @@ app.get('/', function(req, res) {
 	res.send(302);
 });
 
+//post req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -22,12 +24,16 @@ app.use(upload.array(), function(req, res, next) {
 	console.log('\nTime:', Date.now());
 	console.log('[info url]', req._parsedUrl.pathname);
 	console.log('[info body]', req.body);
+
+	res.setHeader('Content-Type', 'application/json;charset=UTF-8');
+	res.setHeader('Access-Control-Allow-Origin', '*');
 	next();
 });
 
 app.use(express.static('public'));
 
 app.use('/user', user);
+app.use('/chat', chat);
 
 var sever = app.listen(8081, function() {
 	var port = sever.address().port;

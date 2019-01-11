@@ -19,6 +19,9 @@
 						<span>登录</span>
 					</div>
 				</div>
+				<p class="bottom_text">
+					<span v-on:click="linkToRegister()">已有账号，去登录</span>
+				</p>
 			</div>
 		</div>
 	</div>
@@ -32,6 +35,10 @@ export default {
 		}
 	},
 	methods: {
+		linkToRegister() {
+			var url = '/register';
+			window.util.jump(url);
+		},
 		submit() {
 			if (/^\s*$/.test(this.account)) {
 				window.alert('账号不能为空');
@@ -109,6 +116,15 @@ export default {
 					width: 60%;
 					color: #fff;
 					margin: 30px auto;
+					@extend .hand;
+				}
+			}
+
+			.bottom_text {
+				text-align: center;
+				font-size: 14px;
+
+				span {
 					@extend .hand;
 				}
 			}

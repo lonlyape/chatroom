@@ -12,8 +12,8 @@
 					</div>
 				</div>
 				<div class="right">
-					<div class="chat_box" v-for="one in chatFriends" v-bind:key="one.friend.id" v-show="one.select">
-						<chat v-bind:friend="one.friend" v-on:sendMsg="sendMsg"></chat>
+					<div class="chat_box" v-for="one in chatFriends" v-bind:key="one.id" v-show="one.select">
+						<chat v-bind:friend="one" v-on:sendMsg="sendMsg"></chat>
 					</div>
 				</div>
 				<div class="socket">
@@ -50,26 +50,25 @@ export default {
 			var has = false;
 			this.$set(this, 'friend', one);
 			this.chatFriends.forEach((item, index) => {
-				if (one.id == item.friend.id) {
-					this.$set(item, 'select', true);
+				if (one.id == item.id) {
+					this.$set(this.chatFriends, index, one);
 					has = true;
 				} else {
 					item.select = false;
+					this.$set(this.chatFriends, index, item);
+					console.log('s')
 				}
 			});
 			if (!has) {
-				var obj = {
-					select: true,
-					friend: one
-				}
-				this.$set(this.chatFriends, this.chatFriends.length, obj);
+				one.select = true;
+				this.$set(this.chatFriends, this.chatFriends.length, one);
 			}
 		},
 		sendMsg(msg) {
 			if (msg) {
 				var obj = {
-					from: this.userInfo.id,
-					to: this.friend.id,
+					fromId: this.userInfo.id,
+					toId: this.friend.id,
 					msg
 				}
 				this.$refs.socket.sendMsg(obj);
@@ -83,7 +82,7 @@ export default {
 <style scoped lang="scss">
 #room {
 	.bg {
-		background: #ffcccc;
+		background: #dfdfdf;
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -105,12 +104,12 @@ export default {
 
 			.center {
 				flex: 4;
-				background: #ccc;
+				background: #ddd;
 			}
 
 			.right {
 				flex: 8;
-				background: #eee;
+				background: #f5f5f5;
 
 				.chat_box {
 					height: 100%;

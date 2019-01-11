@@ -35,10 +35,10 @@ export default {
 				var interval = setInterval(() => {
 					var createdObj = {
 						type: 'create',
-						from: _this.userInfo.id
+						fromId: _this.userInfo.id
 					}
 
-					if (createdObj.from) {
+					if (createdObj.fromId) {
 						ws.send(JSON.stringify(createdObj));
 						clearInterval(interval);
 					}

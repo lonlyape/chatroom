@@ -45,7 +45,7 @@
 					</div>
 				</div>
 				<p class="bottom_text">
-					<span v-on:click="linkToLogin">已有账号，去登录</span>
+					<span v-on:click="linkToLogin()">已有账号，去登录</span>
 				</p>
 			</div>
 		</div>
