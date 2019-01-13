@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array(), function(req, res, next) {
 	console.log('\nTime:', Date.now());
 	console.log('[info url]', req._parsedUrl.pathname);
-	console.log('[info body]', req.body);
+	console.log('[info body]', JSON.stringify(req.body));
 
 	res.setHeader('Content-Type', 'application/json;charset=UTF-8');
 	res.setHeader('Access-Control-Allow-Origin', '*');

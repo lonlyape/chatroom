@@ -56,7 +56,6 @@ export default {
 				} else {
 					item.select = false;
 					this.$set(this.chatFriends, index, item);
-					console.log('s')
 				}
 			});
 			if (!has) {
