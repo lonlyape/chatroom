@@ -53,6 +53,10 @@ const util = {
 			var data = body.data;
 			if (body.code == 200) {
 				callback(data);
+			} else if (body.code == 803) {
+				window.alert(body.message);
+				window.util.removeStor('token');
+				window.util.jump('/login', null, true);
 			} else {
 				if (callback2) {
 					callback2(body);

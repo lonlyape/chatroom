@@ -8,7 +8,9 @@ function makeSendData(code, data) {
 	if (data) {
 		obj.data = data;
 	}
-	return JSON.stringify(obj);
+	var str = JSON.stringify(obj);
+	console.log('[info res]', str);
+	return str;
 }
 
 module.exports = {

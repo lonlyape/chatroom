@@ -15,10 +15,12 @@ export default new Vuex.Store({
 	},
 	actions: {
 		updateUserInfo({ commit }) {
-			var url = 'getUserInfo';
-			window.util.requestPost(url, {}, (data) => {
-				commit('setUserInfo', data);
-			});
+			if (window.util.getStor('token')) {
+				var url = 'getUserInfo';
+				window.util.requestPost(url, {}, (data) => {
+					commit('setUserInfo', data || {});
+				});
+			}
 		}
 	}
 })

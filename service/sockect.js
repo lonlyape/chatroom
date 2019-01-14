@@ -8,7 +8,7 @@ var userConnectionMap = new hashMap();
 //to_id 不在线时才需要
 //保存发送信息到 chat_temporary 表
 function saveTemporaryMsg(obj) {
-	var sql = 'INSERT INTO chat_temporary(from_id,to_id,content) VALUE(?,?,?)';
+	var sql = 'INSERT INTO chat_temporary(from_id,to_id,content,time_created) VALUE(?,?,?,NOW())';
 	var sqlParam = [obj.fromId, obj.toId, obj.msg];
 	mysql.query(sql, sqlParam).then(function(rows) {
 		console.log('[info sockectSave]', JSON.stringify(rows));

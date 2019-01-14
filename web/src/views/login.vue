@@ -20,7 +20,7 @@
 					</div>
 				</div>
 				<p class="bottom_text">
-					<span v-on:click="linkToRegister()">已有账号，去登录</span>
+					<span v-on:click="linkToRegister()">未有账号，去注册</span>
 				</p>
 			</div>
 		</div>

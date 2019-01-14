@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 
+const checkToken = require('./middleware/token.js');
+
 var user = require('./router/user.js');
 var chat = require('./router/chat.js');
 var socket = require('./sockect.js');
@@ -29,6 +31,8 @@ app.use(upload.array(), function(req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	next();
 });
+
+app.use(checkToken); //检查 token 中间件
 
 app.use(express.static('public'));
 

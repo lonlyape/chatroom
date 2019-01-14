@@ -1,12 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const multer = require('multer');
 const mysql = require('../mysql.js');
 const util = require('../common/util.js');
 const baseConfig = require('../common/config/base.js');
 const jwt = require('jsonwebtoken');
 
-var upload = multer();
 var makeSendData = util.makeSendData;
 
 var user = express.Router();
@@ -68,7 +65,7 @@ user.post('/register', function(req, res) {
 
 	//注册
 	function register() {
-		var sql = 'INSERT INTO user_base(account,user_name,name,sex,password,time_create,time_update) VALUE(?,?,?,?,?,NOW(),NOW())';
+		var sql = 'INSERT INTO user_base(account,user_name,name,sex,password,time_created,time_update) VALUE(?,?,?,?,?,NOW(),NOW())';
 		var sqlParam = [body.account, body.userName, body.name, body.sex, body.password];
 		mysql.query(sql, sqlParam).then(function(rows) {
 			updateToken(body, res);

@@ -1,12 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const multer = require('multer');
 const mysql = require('../mysql.js');
 const util = require('../common/util.js');
-const baseConfig = require('../common/config/base.js');
-const jwt = require('jsonwebtoken');
 
-var upload = multer();
 var makeSendData = util.makeSendData;
 
 var chat = express.Router();
