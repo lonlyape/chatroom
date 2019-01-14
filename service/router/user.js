@@ -40,9 +40,9 @@ user.post('/register', function(req, res) {
 
 	//检测账号是否已经存在
 	function checkAccount() {
-		var checkSql = 'SELECT * FROM user_base WHERE account = ?';
+		var sql = 'SELECT * FROM user_base WHERE account = ?';
 		var sqlParam = [body.account];
-		mysql.query(checkSql, sqlParam).then(function(rows) {
+		mysql.query(sql, sqlParam).then(function(rows) {
 			if (rows.length) {
 				var data = makeSendData(801);
 				res.send(data);
@@ -68,14 +68,10 @@ user.post('/register', function(req, res) {
 
 	//注册
 	function register() {
-		var sql = 'INSERT INTO user_base(account,user_name,name,sex,password) VALUE(?,?,?,?,?)';
+		var sql = 'INSERT INTO user_base(account,user_name,name,sex,password,time_create,time_update) VALUE(?,?,?,?,?,NOW(),NOW())';
 		var sqlParam = [body.account, body.userName, body.name, body.sex, body.password];
-		mysql.query(sql, sqlParam, function(err, resule) {
-			if (err) {
-				console.log(err);
-			} else {
-				updateToken(body, res);
-			}
+		mysql.query(sql, sqlParam).then(function(rows) {
+			updateToken(body, res);
 		});
 	}
 
