@@ -28,7 +28,7 @@ import roomLeft from '../components/control/room.left.vue'
 import roomFriends from '../components/control/room.friends.vue'
 import roomChat from '../components/control/room.chat.vue'
 import roomSocket from '../components/control/room.socket.vue'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
 	data() {
 		return {
@@ -45,7 +45,22 @@ export default {
 	computed: {
 		...mapState(['userInfo', 'chatList']),
 	},
+	watch: {
+		chatList: function(val) {
+			if (val) {
+				window.util.setStor('chatList', val);
+				window.util.setStor('unixTime', Math.round(new Date().getTime() / 1000));
+			}
+		}
+	},
+	created() {
+		var chat = window.util.getStor('chatList');
+		this.setChatList(chat);
+		this.updateChatList();
+	},
 	methods: {
+		...mapActions(['updateChatList']),
+		...mapMutations(['setChatList']),
 		setChatFriend(one) {
 			var has = false;
 			this.$set(this, 'friend', one);
@@ -73,7 +88,7 @@ export default {
 				this.$refs.socket.sendMsg(obj);
 				console.log(obj);
 			}
-		}
+		},
 	}
 }
 

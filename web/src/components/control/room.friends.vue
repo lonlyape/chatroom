@@ -25,11 +25,6 @@ export default {
 	computed: {
 		...mapState(['chatList']),
 	},
-	watch: {
-		chatList: function(val) {
-			console.log(val);
-		}
-	},
 	methods: {
 		getFriends() {
 			var url = 'frindeList';
@@ -52,24 +47,39 @@ export default {
 							one.temporaryChat++;
 						}
 					})
-					this.chatList.push(item);
 				});
 				this.temporaryChat = data;
 				console.log(this.temporaryChat);
 			});
 		},
+		deleteTemporaryChat(ids) {
+			if (!ids) {
+				return
+			}
+			var url = 'temporaryChatDelete';
+			var param = {
+				ids
+			};
+			window.util.requestPost(url, param);
+		},
 		selectFriend(one) {
+			var ids = '';
 			this.friends.forEach((item) => {
 				item.select = false;
 			});
 			one.select = true;
 			one.temporaryChat = 0;
-			this.temporaryChat.forEach((item, index) => {
+			this.temporaryChat = this.temporaryChat.filter((item) => {
 				if (item.fromId == one.id) {
-					this.temporaryChat.splice(index, 1);
+					ids += item.id + ',';
+				} else {
+					return true;
 				}
 			});
+
 			this.$emit('setChatFriend', one);
+			ids = ids.replace(/,$/, '');
+			this.deleteTemporaryChat(ids);
 		}
 	},
 }

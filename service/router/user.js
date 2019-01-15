@@ -30,6 +30,15 @@ function updateToken(user, res) {
 }
 
 //注册
+/*
+ *param={
+ *	account:String,
+ *	userName:String
+ *	name:String,
+ *	password:String,
+ *	sex:Number,
+ *}
+ */
 user.post('/register', function(req, res) {
 	var body = req.body;
 
@@ -75,6 +84,12 @@ user.post('/register', function(req, res) {
 })
 
 //登录
+/*
+ *param={
+ *	account:String,
+ *	password:String
+ *}
+ */
 user.post('/login', function(req, res) {
 	var body = req.body;
 
@@ -121,6 +136,11 @@ user.post('/login', function(req, res) {
 });
 
 //获取用户信息
+/*
+ *param={
+ *	token:String,
+ *}
+ */
 user.post('/getUserInfo', function(req, res) {
 
 	var body = req.body;
@@ -139,6 +159,11 @@ user.post('/getUserInfo', function(req, res) {
 });
 
 //好友列表
+/*
+ *param={
+ *	token:String,
+ *}
+ */
 user.post('/frindeList', function(req, res) {
 
 	var body = req.body;

@@ -2,7 +2,7 @@
 	<div class="chat_content">
 		<div>
 			<div class="box">
-				<div class="chat_item" v-for="one in chatList" v-bind:key="one.id+one.msg">
+				<div class="chat_item" v-for="one in chatList" v-bind:key="one.createdTime">
 					<div class="friend" v-if="friend.id==one.fromId">
 						<p v-text="friend.userName"></p>
 						<div>

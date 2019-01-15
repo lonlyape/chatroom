@@ -4,7 +4,7 @@
 	</div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
 	data() {
 		return {
@@ -24,6 +24,7 @@ export default {
 		this.socketCreate();
 	},
 	methods: {
+		...mapMutations(['setChatList']),
 		socketCreate() {
 			var url = this.url || window.config.socketUrl;
 			var ws = new WebSocket(url);
@@ -60,7 +61,7 @@ export default {
 		sendMsg(msg) {
 			msg.type = 'chat';
 			this.ws.send(JSON.stringify(msg));
-			this.chatList.push(msg);
+			this.setChatList(msg);
 		},
 
 	},

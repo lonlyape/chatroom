@@ -9,6 +9,8 @@ const config = {
 		getUserInfo: '/user/getUserInfo',
 		frindeList: '/user/frindeList',
 		temporaryChat: '/chat/temporary',
+		temporaryChatDelete: '/chat/temporary/delete',
+		getChatList: '/chat/getChatList',
 	},
 };
 

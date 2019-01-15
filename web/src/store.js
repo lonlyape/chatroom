@@ -12,6 +12,21 @@ export default new Vuex.Store({
 		setUserInfo(state, info) {
 			state.userInfo = { ...info }
 		},
+		setChatList(state, chat) {
+			if (chat instanceof Array) {
+				chat.forEach((item) => {
+					if (!item.createdTime) {
+						item.createdTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
+					}
+				});
+			} else if (chat instanceof Object) {
+				if (!chat.createdTime) {
+					chat.createdTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
+				}
+				chat = [chat];
+			}
+			state.chatList = state.chatList.concat(chat || []);
+		}
 	},
 	actions: {
 		updateUserInfo({ commit }) {
@@ -21,6 +36,16 @@ export default new Vuex.Store({
 					commit('setUserInfo', data || {});
 				});
 			}
-		}
+		},
+		updateChatList({ commit }) {
+			var chatList = this.chatList;
+			var url = 'getChatList';
+			var param = {
+				fromTime: window.util.getStor('unixTime') || 0
+			}
+			window.util.requestPost(url, param, (data) => {
+				commit('setChatList', data || []);
+			});
+		},
 	}
 })
