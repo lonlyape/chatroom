@@ -13,6 +13,7 @@ chat.use(function(req, res, next) {
 module.exports = chat;
 
 /*
+ *获取聊天临时记录
  *param={
  *	token:String
  *}
@@ -29,6 +30,7 @@ chat.post('/temporary', function(req, res) {
 });
 
 /*
+ *删除聊天临时记录
  *param={
  *	ids:String(1,2,3)
  *}
@@ -38,14 +40,13 @@ chat.post('/temporary/delete', function(req, res) {
 
 	var ids = body.ids.split(',');
 
-	var sql = 'DELETE FROM chat_temporary WHERE id IN (?)';
-
 	var qN = '';
 	for (var i = 0; i < ids.length; i++) {
 		qN += '?,';
 	}
 	qN = qN.replace(/,$/, '');
 
+	var sql = 'DELETE FROM chat_temporary WHERE id IN (?)';
 	sql = sql.replace('?', qN);
 
 	var sqlParam = ids;
@@ -56,6 +57,7 @@ chat.post('/temporary/delete', function(req, res) {
 });
 
 /*
+ *获取聊天记录
  *param={
  *	token:String,
  *	fromTime:Number

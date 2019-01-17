@@ -1,4 +1,3 @@
-// import express from 'express';
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
@@ -23,6 +22,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(upload.array(), function(req, res, next) {
+	/*
+	 *打印请求日志
+	 */
 	console.log('\nTime:', Date.now());
 	console.log('[info url]', req._parsedUrl.pathname);
 	console.log('[info body]', JSON.stringify(req.body));

@@ -2,7 +2,9 @@ const webSocket = require('ws').Server;
 const hashMap = require('hashmap');
 const mysql = require('./mysql.js');
 
-// 管理 socket 连接
+/*
+ *管理 socket 连接
+ */
 var userConnectionMap = new hashMap();
 
 /*
