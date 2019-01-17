@@ -1,21 +1,21 @@
-# web
+# web端
 
 ## Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 编译和热更新
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 编译和项目打包
 ```
 npm run build
 ```
 
-### Lints and fixes files
+### 提示和修复文件
 ```
 npm run lint
 ```
