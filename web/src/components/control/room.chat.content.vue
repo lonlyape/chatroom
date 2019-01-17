@@ -32,6 +32,32 @@ export default {
 	computed: {
 		...mapState(['userInfo', 'chatList']),
 	},
+	watch: {
+		chatList: function(val) {
+			var box = this.$el.querySelector('.box');
+			var clientHeight = box.clientHeight;
+			var scrollHeight = box.scrollHeight;
+			var scrollTop = box.scrollTop;
+			if (scrollHeight - clientHeight <= scrollTop) {
+				this.$nextTick(() => {
+					this.scrollToBottom();
+				});
+			}
+		}
+	},
+	created() {
+		this.$nextTick(() => {
+			this.scrollToBottom();
+		});
+	},
+	methods: {
+		scrollToBottom() {
+			var box = this.$el.querySelector('.box');
+			var clientHeight = box.clientHeight;
+			var scrollHeight = box.scrollHeight;
+			box.scrollTo(0, scrollHeight - clientHeight);
+		},
+	}
 }
 
 </script>

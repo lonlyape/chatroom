@@ -60,6 +60,7 @@ export default {
 		},
 		sendMsg(msg) {
 			msg.type = 'chat';
+			msg.createdTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
 			this.ws.send(JSON.stringify(msg));
 			this.setChatList(msg);
 		},

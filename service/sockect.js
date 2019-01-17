@@ -10,8 +10,8 @@ var userConnectionMap = new hashMap();
  *保存发送信息到 chat_temporary 表
  */
 function saveTemporaryMsg(obj) {
-	var sql = 'INSERT INTO chat_temporary(from_id,to_id,content,time_created) VALUE(?,?,?,NOW())';
-	var sqlParam = [obj.fromId, obj.toId, obj.msg];
+	var sql = 'INSERT INTO chat_temporary(from_id,to_id,content,time_created) VALUE(?,?,?,?)';
+	var sqlParam = [obj.fromId, obj.toId, obj.msg, obj.createdTime];
 	mysql.query(sql, sqlParam).then(function(rows) {
 		console.log('[info sockectSave]', JSON.stringify(rows));
 	});
@@ -22,8 +22,8 @@ function saveTemporaryMsg(obj) {
  *
  */
 function saveMsg(obj) {
-	var sql = 'INSERT INTO chat_content(from_id,to_id,content,time_created) VALUE(?,?,?,NOW())';
-	var sqlParam = [obj.fromId, obj.toId, obj.msg];
+	var sql = 'INSERT INTO chat_content(from_id,to_id,content,time_created) VALUE(?,?,?,?)';
+	var sqlParam = [obj.fromId, obj.toId, obj.msg, obj.createdTime];
 	mysql.query(sql, sqlParam).then(function(rows) {
 		console.log('[info sockectSave]', JSON.stringify(rows));
 	});

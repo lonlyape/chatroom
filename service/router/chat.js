@@ -64,8 +64,8 @@ chat.post('/temporary/delete', function(req, res) {
 chat.post('/getChatList', function(req, res) {
 	var body = req.body;
 
-	var sql = 'SELECT t1.from_id fromId, t1.to_id toId, t1.content msg, t1.time_created createdTime FROM chat_content t1 JOIN user_base t2 ON t2.id=t1.from_id WHERE unix_timestamp(t1.time_created) > ? AND t2.token=? UNION SELECT t1.from_id fromId, t1.to_id toId, t1.content msg, t1.time_created createdTime FROM chat_content t1 JOIN user_base t2 ON t2.id=t1.to_id WHERE unix_timestamp(t1.time_created) > ? AND t2.token=?';
-	var sqlParam = [body.fromTime, body.token, body.fromTime, body.token];
+	var sql = 'SELECT t1.from_id fromId, t1.to_id toId, t1.content msg, DATE_FORMAT(t1.time_created,"%Y-%c-%d %T") createdTime FROM chat_content t1 JOIN user_base t2 ON (t2.id=t1.from_id OR t2.id=t1.to_id) WHERE unix_timestamp(t1.time_created) > ? AND t2.token=? ORDER BY unix_timestamp(t1.time_created)';
+	var sqlParam = [body.fromTime, body.token];
 	mysql.query(sql, sqlParam).then(function(rows) {
 		var data = makeSendData(200, rows);
 		res.send(data);

@@ -49,14 +49,15 @@ export default {
 		chatList: function(val) {
 			if (val) {
 				window.util.setStor('chatList', val);
-				window.util.setStor('unixTime', Math.round(new Date().getTime() / 1000));
+				var unixTime = val[val.length - 1].createdTime;
+				window.util.setStor('unixTime', Math.round(new Date(unixTime).getTime() / 1000));
 			}
 		}
 	},
 	created() {
 		var chat = window.util.getStor('chatList');
-		this.setChatList(chat);
 		this.updateChatList();
+		this.setChatList(chat);
 	},
 	methods: {
 		...mapActions(['updateChatList']),
