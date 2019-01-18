@@ -21,6 +21,7 @@
 				</div>
 			</div>
 		</div>
+		<friend-add></friend-add>
 	</div>
 </template>
 <script>
@@ -28,6 +29,7 @@ import roomLeft from '../components/control/room.left.vue'
 import roomFriends from '../components/control/room.friends.vue'
 import roomChat from '../components/control/room.chat.vue'
 import roomSocket from '../components/control/room.socket.vue'
+import roomFriendAdd from '../components/control/room.friend.add.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
 	data() {
@@ -38,6 +40,7 @@ export default {
 	},
 	components: {
 		left: roomLeft,
+		friendAdd: roomFriendAdd,
 		friends: roomFriends,
 		chat: roomChat,
 		socket: roomSocket

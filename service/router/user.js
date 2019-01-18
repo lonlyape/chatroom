@@ -179,3 +179,19 @@ user.post('/frindeList', function(req, res) {
 		});
 	}
 });
+
+/*
+ *param={
+ *	id:Number	
+ *	userName:String
+ *}
+ */
+user.post('/seach/username', function(req, res) {
+	var body = req.body;
+
+	function getByUserName() {
+		var sql = '';
+		var sqlParam = [];
+		mysql.query().then();
+	}
+});
