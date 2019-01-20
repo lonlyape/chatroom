@@ -3,7 +3,7 @@
 		<div class="bg">
 			<div class="box">
 				<div class="left">
-					<left></left>
+					<left v-on:friendAdd="friendAdd"></left>
 				</div>
 				<div class="center">
 					<div class="up"></div>
@@ -21,7 +21,7 @@
 				</div>
 			</div>
 		</div>
-		<friend-add></friend-add>
+		<friend-add ref="friendAdd"></friend-add>
 	</div>
 </template>
 <script>
@@ -92,6 +92,9 @@ export default {
 				this.$refs.socket.sendMsg(obj);
 				console.log(obj);
 			}
+		},
+		friendAdd(){
+			this.$refs.friendAdd.handleIsShow();
 		},
 	}
 }

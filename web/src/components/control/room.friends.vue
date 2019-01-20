@@ -27,7 +27,7 @@ export default {
 	},
 	methods: {
 		getFriends() {
-			var url = 'frindeList';
+			var url = 'friendList';
 			window.util.requestPost(url, {}, (data) => {
 				data.forEach((one) => {
 					one.sex = one.sex == 0 ? '男' : '女';

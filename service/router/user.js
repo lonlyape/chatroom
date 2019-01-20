@@ -164,7 +164,7 @@ user.post('/getUserInfo', function(req, res) {
  *	token:String,
  *}
  */
-user.post('/frindeList', function(req, res) {
+user.post('/friendList', function(req, res) {
 
 	var body = req.body;
 
@@ -196,6 +196,27 @@ user.post('/seach/username', function(req, res) {
 		var sqlParam=[body.id,body.id,body.id,body.id,'%'+body.userName+'%'];
 		mysql.query(sql,sqlParam).then(function(rows){
 			var data=makeSendData(200,rows);
+			res.send(data);
+		});
+	}
+});
+
+/*
+ *param={
+ *	applyId:Number
+ *	replyId:Number
+ *}
+ */
+user.post('/friend/apply', function(req, res) {
+	var body = req.body;
+
+	friendApply();
+
+	function friendApply() {
+		var sql='INSERT INTO user_relationship(id_apply,id_reply,status,time_created,time_update) VALUE(?,?,0,NOW(),NOW())';
+		var sqlParam=[body.applyId,body.replyId];
+		mysql.query(sql,sqlParam).then(function(rows){
+			var data=makeSendData(200);
 			res.send(data);
 		});
 	}

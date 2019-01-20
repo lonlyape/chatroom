@@ -1,17 +1,21 @@
 <template>
 	<div id="add">
-		<div class="mask">
+		<div class="mask" v-if="isShow">
 			<div class="box">
+				<div class="close_box">
+					<span class="icon-close" v-on:click="handleIsShow(false)"></span>
+				</div>
 				<div class="input_box">
-					<input type="text" v-model="userName" v-on:keyup.13="seach()">
+					<input type="text" v-model="userName" v-on:keyup.13="seach()" placeholder="输入用户名">
 				</div>
 				<div class="ul_box" v-bind:class="{'scroll':hasScroll}">
-					<ul>
+					<div class="mind" v-if="!userList.length">输完用户名，回车进行查询</div>
+					<ul v-else>
 						<li v-for="(one,key) in userList" v-bind:key="key">
 							<div class="item">
 								<div class="left">
 									<p v-text="one.userName">小明</p>
-									<span>男</span>
+									<span v-text="one.sex">男</span>
 								</div>
 								<div class="right">
 									<span v-on:click="add(one)">添加</span>
@@ -31,12 +35,17 @@ export default {
 		return {
 			userList: [],
 			hasScroll: false,
+			isShow:false,
 			userName:'',
 		}
 	},
 	watch: {
 		userList: function(val) {
 			this.scrollFun();
+		},
+		isShow: function(val){
+			this.userList=[];
+			this.userName='';
 		}
 	},
 	computed:{
@@ -46,7 +55,17 @@ export default {
 		this.scrollFun();
 	},
 	methods: {
+		handleIsShow(b){
+			if(b!==undefined){
+				this.isShow=b;
+			}else{
+				this.isShow=!this.isShow
+			}
+		},
 		scrollFun() {
+			if(!this.isShow){
+				return;
+			}
 			this.$nextTick(() => {
 				var box = this.$el.querySelector('.ul_box');
 				var clientHeight = box.clientHeight;
@@ -67,11 +86,27 @@ export default {
 				id:this.userInfo.id
 			};
 			window.util.requestPost(url,param,(data)=>{
+				data.forEach((one)=>{
+					one.sex=one.sex==0?'男':'女';
+				});
 				this.userList=data;
 			})
 		},
 		add(one){
 			console.log(one.userName)
+			var url='friendApply';
+			var param={
+				applyId:this.userInfo.id,
+				replyId:one.id
+			};
+			window.util.requestPost(url,param,(data)=>{
+				window.alert('添加成功,等待对方答应');
+				this.userList.forEach((item,index)=>{
+					if(item.id==one.id){
+						this.userList.splice(index,1);
+					}
+				})
+			});
 		}
 	},
 }
@@ -95,6 +130,13 @@ export default {
 			background: #fff;
 			overflow: hidden;
 
+			.close_box{
+				position: absolute;
+				right:4px;
+				top:4px;
+				@extend .hand;
+			}
+
 			.input_box {
 				padding: 30px;
 
@@ -116,6 +158,9 @@ export default {
 
 				&.scroll {
 					right: -18px;
+				}
+				.mind{
+					text-align: center;
 				}
 
 				ul {
@@ -152,6 +197,15 @@ export default {
 						}
 					}
 
+				}
+			}
+			@media screen and (max-width: 800px){
+				.ul_box{
+					ul{
+						li{
+							width: 100%;
+						}
+					}
 				}
 			}
 		}

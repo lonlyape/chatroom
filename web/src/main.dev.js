@@ -8,6 +8,7 @@ import './common/js/util.js'
 import './common/js/common.js'
 
 import './common/style/resect.css'
+import './common/style/font/iconfont.css'
 
 Vue.config.productionTip = false
 
