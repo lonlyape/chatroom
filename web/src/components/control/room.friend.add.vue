@@ -3,17 +3,19 @@
 		<div class="mask">
 			<div class="box">
 				<div class="input_box">
-					<input type="text">
+					<input type="text" v-model="userName" v-on:keyup.13="seach()">
 				</div>
 				<div class="ul_box" v-bind:class="{'scroll':hasScroll}">
 					<ul>
-						<li v-for="(one,key) in new Array(12)" v-bind:key="key">
+						<li v-for="(one,key) in userList" v-bind:key="key">
 							<div class="item">
 								<div class="left">
-									<p>小明</p>
+									<p v-text="one.userName">小明</p>
 									<span>男</span>
 								</div>
-								<div class="right">添加</div>
+								<div class="right">
+									<span v-on:click="add(one)">添加</span>
+								</div>
 							</div>
 						</li>
 					</ul>
@@ -23,17 +25,22 @@
 	</div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
 	data() {
 		return {
 			userList: [],
 			hasScroll: false,
+			userName:'',
 		}
 	},
 	watch: {
 		userList: function(val) {
 			this.scrollFun();
 		}
+	},
+	computed:{
+		...mapState(['userInfo'])
 	},
 	created() {
 		this.scrollFun();
@@ -44,9 +51,28 @@ export default {
 				var box = this.$el.querySelector('.ul_box');
 				var clientHeight = box.clientHeight;
 				var scrollHeight = box.scrollHeight;
-				this.hasScroll = clientHeight < scrollHeight;
+				// this.hasScroll = clientHeight < scrollHeight;
+				this.hasScroll=true;
 			});
 		},
+		seach(){
+			var userName=this.userName;
+			if(/^\s*$/.test(userName)){
+				window.alert('输入内容不能为空');
+				return;
+			}
+			var url='seachByUserName';
+			var param={
+				userName,
+				id:this.userInfo.id
+			};
+			window.util.requestPost(url,param,(data)=>{
+				this.userList=data;
+			})
+		},
+		add(one){
+			console.log(one.userName)
+		}
 	},
 }
 
@@ -112,13 +138,16 @@ export default {
 								flex: 1;
 
 								p {
-									font-size: 16px;
+									font-size: 14px;
 									margin-bottom: 4px;
 								}
 							}
 
 							.right {
 								width: 40px;
+								span{
+									@extend .hand;
+								}
 							}
 						}
 					}

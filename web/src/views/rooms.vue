@@ -52,7 +52,7 @@ export default {
 		chatList: function(val) {
 			if (val) {
 				window.util.setStor('chatList', val);
-				var unixTime = val[val.length - 1].createdTime;
+				var unixTime = val.length?val[val.length - 1].createdTime:0;
 				window.util.setStor('unixTime', Math.round(new Date(unixTime).getTime() / 1000));
 			}
 		}

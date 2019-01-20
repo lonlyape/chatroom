@@ -8,6 +8,7 @@ const config = {
 		login: '/user/login',
 		getUserInfo: '/user/getUserInfo',
 		frindeList: '/user/frindeList',
+		seachByUserName: '/user/seach/username',
 		temporaryChat: '/chat/temporary',
 		temporaryChatDelete: '/chat/temporary/delete',
 		getChatList: '/chat/getChatList',

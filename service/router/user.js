@@ -182,16 +182,21 @@ user.post('/frindeList', function(req, res) {
 
 /*
  *param={
- *	id:Number	
+ *	id:Number
  *	userName:String
  *}
  */
 user.post('/seach/username', function(req, res) {
 	var body = req.body;
 
+	getByUserName();
+
 	function getByUserName() {
-		var sql = '';
-		var sqlParam = [];
-		mysql.query().then();
+		var sql='SELECT t1.id, t1.user_name userName, t1.sex FROM user_base t1 LEFT JOIN user_relationship t2 ON t1.id = t2.id_apply AND t2.id_apply=? LEFT JOIN user_relationship t3 ON t1.id = t3.id_apply AND t3.id_reply=? LEFT JOIN user_relationship t4 ON t1.id = t4.id_reply AND t4.id_apply=? LEFT JOIN user_relationship t5 ON t1.id = t5.id_reply AND t5.id_reply=? WHERE t2.id_apply IS null AND t2.id_reply IS null AND t3.id_apply IS null AND t3.id_reply IS null AND t4.id_apply IS null AND t4.id_reply IS null AND t5.id_apply IS null AND t5.id_reply IS null AND t1.user_name LIKE ?';
+		var sqlParam=[body.id,body.id,body.id,body.id,'%'+body.userName+'%'];
+		mysql.query(sql,sqlParam).then(function(rows){
+			var data=makeSendData(200,rows);
+			res.send(data);
+		});
 	}
 });
