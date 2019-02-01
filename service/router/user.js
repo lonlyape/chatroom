@@ -9,7 +9,7 @@ var makeSendData = util.makeSendData;
 var user = express.Router();
 
 user.use(function(req, res, next) {
-	next();
+    next();
 });
 
 module.exports = user;
@@ -17,16 +17,16 @@ module.exports = user;
 
 //更新token
 function updateToken(user, res) {
-	var payload = {
-		account: user.account
-	};
-	var token = jwt.sign(payload, baseConfig.jwt_key);
-	var sql = 'UPDATE user_base SET token=? WHERE account=?';
-	var sqlParam = [token, user.account];
-	mysql.query(sql, sqlParam).then(function(rows) {
-		var data = makeSendData(200, { token });
-		res.send(data);
-	});
+    var payload = {
+        account: user.account
+    };
+    var token = jwt.sign(payload, baseConfig.jwt_key);
+    var sql = 'UPDATE user_base SET token=? WHERE account=?';
+    var sqlParam = [token, user.account];
+    mysql.query(sql, sqlParam).then(function(rows) {
+        var data = makeSendData(200, { token });
+        res.send(data);
+    });
 }
 
 /*
@@ -40,46 +40,46 @@ function updateToken(user, res) {
  *}
  */
 user.post('/register', function(req, res) {
-	var body = req.body;
+    var body = req.body;
 
-	checkAccount();
+    checkAccount();
 
-	//检测账号是否已经存在
-	function checkAccount() {
-		var sql = 'SELECT * FROM user_base WHERE account = ?';
-		var sqlParam = [body.account];
-		mysql.query(sql, sqlParam).then(function(rows) {
-			if (rows.length) {
-				var data = makeSendData(801);
-				res.send(data);
-			} else {
-				checkUserName();
-			}
-		});
-	}
+    //检测账号是否已经存在
+    function checkAccount() {
+        var sql = 'SELECT * FROM user_base WHERE account = ?';
+        var sqlParam = [body.account];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            if (rows.length) {
+                var data = makeSendData(801);
+                res.send(data);
+            } else {
+                checkUserName();
+            }
+        });
+    }
 
-	//检测用户名是否已经存在
-	function checkUserName() {
-		var sql = 'SELECT * FROM user_base WHERE user_name = ?';
-		var sqlParam = [body.userName];
-		mysql.query(sql, sqlParam).then(function(rows) {
-			if (rows.length) {
-				var data = makeSendData(802);
-				res.send(data);
-			} else {
-				register();
-			}
-		});
-	}
+    //检测用户名是否已经存在
+    function checkUserName() {
+        var sql = 'SELECT * FROM user_base WHERE user_name = ?';
+        var sqlParam = [body.userName];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            if (rows.length) {
+                var data = makeSendData(802);
+                res.send(data);
+            } else {
+                register();
+            }
+        });
+    }
 
-	//注册
-	function register() {
-		var sql = 'INSERT INTO user_base(account,user_name,name,sex,password,time_created,time_update) VALUE(?,?,?,?,?,NOW(),NOW())';
-		var sqlParam = [body.account, body.userName, body.name, body.sex, body.password];
-		mysql.query(sql, sqlParam).then(function(rows) {
-			updateToken(body, res);
-		});
-	}
+    //注册
+    function register() {
+        var sql = 'INSERT INTO user_base(account,user_name,name,sex,password,time_created,time_update) VALUE(?,?,?,?,?,NOW(),NOW())';
+        var sqlParam = [body.account, body.userName, body.name, body.sex, body.password];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            updateToken(body, res);
+        });
+    }
 
 })
 
@@ -91,47 +91,47 @@ user.post('/register', function(req, res) {
  *}
  */
 user.post('/login', function(req, res) {
-	var body = req.body;
+    var body = req.body;
 
-	loginByAccount();
+    loginByAccount();
 
-	//账号登录
-	function loginByAccount() {
-		var sql = 'SELECT * FROM user_base WHERE account = ?';
-		var sqlParam = [body.account];
-		mysql.query(sql, sqlParam).then(function(rows) {
-			if (rows.length) {
-				checkPasswork(rows);
-			} else {
-				loginByUserName();
-			}
-		});
-	}
+    //账号登录
+    function loginByAccount() {
+        var sql = 'SELECT * FROM user_base WHERE account = ?';
+        var sqlParam = [body.account];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            if (rows.length) {
+                checkPasswork(rows);
+            } else {
+                loginByUserName();
+            }
+        });
+    }
 
-	//用户名登录
-	function loginByUserName() {
-		var sql = 'SELECT * FROM user_base WHERE user_name = ?';
-		var sqlParam = [body.account];
-		mysql.query(sql, sqlParam).then(function(rows) {
-			if (rows.length) {
-				checkPasswork(rows);
-			} else {
-				var data = makeSendData(803);
-				res.send(data);
-			}
-		});
-	}
+    //用户名登录
+    function loginByUserName() {
+        var sql = 'SELECT * FROM user_base WHERE user_name = ?';
+        var sqlParam = [body.account];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            if (rows.length) {
+                checkPasswork(rows);
+            } else {
+                var data = makeSendData(803);
+                res.send(data);
+            }
+        });
+    }
 
-	//校对密码
-	function checkPasswork(resule) {
-		var user = resule[0];
-		if (user.password == body.password) {
-			updateToken(user, res);
-		} else {
-			var data = makeSendData(804);
-			res.send(data);
-		}
-	}
+    //校对密码
+    function checkPasswork(resule) {
+        var user = resule[0];
+        if (user.password == body.password) {
+            updateToken(user, res);
+        } else {
+            var data = makeSendData(804);
+            res.send(data);
+        }
+    }
 
 });
 
@@ -143,18 +143,18 @@ user.post('/login', function(req, res) {
  */
 user.post('/getUserInfo', function(req, res) {
 
-	var body = req.body;
+    var body = req.body;
 
-	getBaseInfo();
+    getBaseInfo();
 
-	function getBaseInfo() {
-		var sql = 'SELECT id, user_name as userName, sex FROM user_base WHERE token = ?';
-		var sqlParam = [body.token];
-		mysql.query(sql, sqlParam).then(function(rows) {
-			var data = makeSendData(200, rows[0]);
-			res.send(data);
-		});
-	}
+    function getBaseInfo() {
+        var sql = 'SELECT id, user_name as userName, sex FROM user_base WHERE token = ?';
+        var sqlParam = [body.token];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            var data = makeSendData(200, rows[0]);
+            res.send(data);
+        });
+    }
 
 });
 
@@ -166,58 +166,106 @@ user.post('/getUserInfo', function(req, res) {
  */
 user.post('/friendList', function(req, res) {
 
-	var body = req.body;
+    var body = req.body;
 
-	getFrindeList()
+    getFrindeList()
 
-	function getFrindeList() {
-		var sql = 'SELECT t3.id, t3.user_name as userName, t3.sex FROM user_base t1 JOIN user_relationship t2 ON t1.id = t2.id_apply JOIN user_base t3 ON t3.id = t2.id_reply WHERE t2.status IN (1,3,6) AND t1.token = ? UNION SELECT t3.id, t3.user_name as userName, t3.sex FROM user_base t1 JOIN user_relationship t2 ON t1.id = t2.id_reply JOIN user_base t3 ON t3.id = t2.id_apply WHERE t2.status IN (1,2,5) AND t1.token = ?';
-		var sqlParam = [body.token, body.token];
-		mysql.query(sql, sqlParam).then(function(rows) {
-			var data = makeSendData(200, rows);
-			res.send(data);
-		});
-	}
+    function getFrindeList() {
+        var sql = 'SELECT t3.id, t3.user_name as userName, t3.sex FROM user_base t1 JOIN user_relationship t2 ON t1.id = t2.id_apply JOIN user_base t3 ON t3.id = t2.id_reply WHERE t2.status IN (1,3,6) AND t1.token = ? UNION SELECT t3.id, t3.user_name as userName, t3.sex FROM user_base t1 JOIN user_relationship t2 ON t1.id = t2.id_reply JOIN user_base t3 ON t3.id = t2.id_apply WHERE t2.status IN (1,2,5) AND t1.token = ?';
+        var sqlParam = [body.token, body.token];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            var data = makeSendData(200, rows);
+            res.send(data);
+        });
+    }
 });
 
 /*
+ *根据用户名模糊查询
  *param={
  *	id:Number
  *	userName:String
  *}
  */
 user.post('/seach/username', function(req, res) {
-	var body = req.body;
+    var body = req.body;
 
-	getByUserName();
+    getByUserName();
 
-	function getByUserName() {
-		var sql='SELECT t1.id, t1.user_name userName, t1.sex FROM user_base t1 LEFT JOIN user_relationship t2 ON t1.id = t2.id_apply AND t2.id_apply=? LEFT JOIN user_relationship t3 ON t1.id = t3.id_apply AND t3.id_reply=? LEFT JOIN user_relationship t4 ON t1.id = t4.id_reply AND t4.id_apply=? LEFT JOIN user_relationship t5 ON t1.id = t5.id_reply AND t5.id_reply=? WHERE t2.id_apply IS null AND t2.id_reply IS null AND t3.id_apply IS null AND t3.id_reply IS null AND t4.id_apply IS null AND t4.id_reply IS null AND t5.id_apply IS null AND t5.id_reply IS null AND t1.user_name LIKE ?';
-		var sqlParam=[body.id,body.id,body.id,body.id,'%'+body.userName+'%'];
-		mysql.query(sql,sqlParam).then(function(rows){
-			var data=makeSendData(200,rows);
-			res.send(data);
-		});
-	}
+    function getByUserName() {
+        var sql = 'SELECT t1.id, t1.user_name userName, t1.sex FROM user_base t1 LEFT JOIN user_relationship t2 ON t1.id = t2.id_apply AND t2.id_apply=? LEFT JOIN user_relationship t3 ON t1.id = t3.id_apply AND t3.id_reply=? LEFT JOIN user_relationship t4 ON t1.id = t4.id_reply AND t4.id_apply=? LEFT JOIN user_relationship t5 ON t1.id = t5.id_reply AND t5.id_reply=? WHERE t2.id_apply IS null AND t2.id_reply IS null AND t3.id_apply IS null AND t3.id_reply IS null AND t4.id_apply IS null AND t4.id_reply IS null AND t5.id_apply IS null AND t5.id_reply IS null AND t1.user_name LIKE ?';
+        var sqlParam = [body.id, body.id, body.id, body.id, '%' + body.userName + '%'];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            var data = makeSendData(200, rows);
+            res.send(data);
+        });
+    }
 });
 
 /*
+ *申请成为好友
  *param={
  *	applyId:Number
  *	replyId:Number
  *}
  */
 user.post('/friend/apply', function(req, res) {
-	var body = req.body;
+    var body = req.body;
 
-	friendApply();
+    friendApply();
 
-	function friendApply() {
-		var sql='INSERT INTO user_relationship(id_apply,id_reply,status,time_created,time_update) VALUE(?,?,0,NOW(),NOW())';
-		var sqlParam=[body.applyId,body.replyId];
-		mysql.query(sql,sqlParam).then(function(rows){
-			var data=makeSendData(200);
-			res.send(data);
-		});
-	}
+    function friendApply() {
+        var sql = 'INSERT INTO user_relationship(id_apply,id_reply,status,time_created,time_update) VALUE(?,?,0,NOW(),NOW())';
+        var sqlParam = [body.applyId, body.replyId];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            var data = makeSendData(200);
+            res.send(data);
+        });
+    }
+});
+
+/*
+ *查询好友申请
+ *param={
+ *	token:String
+ *}
+ */
+user.post('/friend/applyList', function(req, res) {
+    var body = req.body;
+
+    applyList();
+
+    function applyList() {
+        var sql = 'SELECT t2.id, t3.id userId,t3.user_name userName,t3.sex FROM user_base t1 JOIN user_relationship t2 ON t1.id=t2.id_reply JOIN user_base t3 ON t3.id=t2.id_apply WHERE t2.status=0 AND t1.token=?';
+        var sqlParam = [body.token];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            var data = makeSendData(200, rows);
+            res.send(data);
+        });
+    }
+});
+
+/*
+ *回应好友申请
+ *param={
+ *	id:Number,
+ *  status:Number
+ *}
+ */
+user.post('/friend/reply', function(req, res) {
+    var body = req.body;
+
+    reply();
+
+    function reply() {
+        var sql = 'UPDATE user_relationship SET status=1 WHERE id=?';
+        if (!body.status) {
+            sql = 'DELETE FROM user_relationship WHERE id=?';
+        }
+        var sqlParam = [body.id];
+        mysql.query(sql, sqlParam).then(function(rows) {
+            var data = makeSendData(200);
+            res.send(data);
+        });
+    }
 });

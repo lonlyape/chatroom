@@ -11,6 +11,8 @@ const config = {
         friendList: '/user/friendList',
         friendApply: '/user/friend/apply',
         seachByUserName: '/user/seach/username',
+        applyList: '/user/friend/applyList',
+        reply: '/user/friend/reply',
         temporaryChat: '/chat/temporary',
         temporaryChatDelete: '/chat/temporary/delete',
         getChatList: '/chat/getChatList',

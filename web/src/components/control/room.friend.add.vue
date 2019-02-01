@@ -1,5 +1,8 @@
 <template>
     <div id="add">
+        <div class="showbox" v-on:click="handleIsShow(true)">
+            <div>添加好友</div>
+        </div>
         <div class="mask" v-if="isShow">
             <div class="box">
                 <div class="close_box">
@@ -114,6 +117,11 @@ export default {
 </script>
 <style scoped lang="scss">
 #add {
+    .showbox {
+        padding: 8px 10px;
+        @extend .hand;
+    }
+
     .mask {
         position: fixed;
         top: 0;
@@ -129,6 +137,9 @@ export default {
             left: 30%;
             background: #fff;
             overflow: hidden;
+            text-align: left;
+            color: #333;
+            box-shadow: 0px 0px 1px 1px #ccc;
 
             .close_box {
                 position: absolute;

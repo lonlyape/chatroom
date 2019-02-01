@@ -49,7 +49,6 @@ const util = {
         };
 
         Vue.http.post(url, param, httpSet).then((res) => {
-            console.log(res);
             if (res.noHandle) {
                 return;
             }
@@ -60,6 +59,8 @@ const util = {
             } else if (body.code == window.config.badTokenCode) {
                 window.alert(body.message);
                 window.util.removeStor('token');
+                window.util.removeStor('chatList');
+                window.util.removeStor('unixTime');
                 window.util.jump('/login', null, true);
             } else {
                 if (callback2) {
